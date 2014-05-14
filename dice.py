@@ -1,8 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
-
-plt.rcdefaults()
 
 
 class Die(object):
@@ -17,6 +13,12 @@ class Die(object):
 
         return Dice(other, self.sides)
 
+    def probability(self):
+        scores = np.array(range(1, self.sides + 1))
+        onedice = totaldice = np.ones(self.sides) / self.sides
+
+        return (scores, onedice)
+
 
 class Dice(object):
     def __init__(self, multiplier, sides):
@@ -27,16 +29,11 @@ class Dice(object):
         return '%id%i' % (self.multiplier, self.sides)
 
     def probability(self):
-        scores = range(self.multiplier, self.multiplier * self.sides + 1)
-
+        scores = np.array(range(self.multiplier,
+                                self.multiplier * self.sides + 1))
         onedice = totaldice = np.ones(self.sides) / self.sides
 
-        for _ in xrange(self.multiplier - 1):
+        for _ in range(self.multiplier - 1):
             totaldice = np.convolve(totaldice, onedice)
 
-        print len(scores), scores
-        print len(totaldice), totaldice, '=', np.sum(totaldice)
-
-        plt.bar(scores, totaldice,
-                align='center')
-        plt.show()
+        return (scores, totaldice)
