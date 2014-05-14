@@ -11,5 +11,11 @@ if __name__ == '__main__':
         string = input('Roll? ')
         roll = parse(string)
 
-        print(roll)
-        print(roll.probability())
+        scores, probabilities = roll.probability()
+        for row in zip(scores, probabilities):
+            print("%d: %g" % row)
+
+        plt.title(str(roll))
+        plt.bar(scores, probabilities,
+                align='center')
+        plt.show()
